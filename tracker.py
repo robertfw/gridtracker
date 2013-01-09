@@ -10,8 +10,19 @@ data = {
     '2013-01-04': 'good',
     '2013-01-05': 'bad',
     '2013-01-06': 'bad',
-    '2013-01-07': 'good'
+    '2013-01-07': 'good',
+    '2013-01-08': 'good'
 }
+
+# data = {
+#     '2013-01-01': 'good',
+#     '2013-01-02': 'good',
+#     '2013-01-03': 'great',
+#     '2013-01-04': 'good',
+#     '2013-01-05': 'bad',
+#     '2013-01-06': 'bad',
+#     '2013-01-07': 'terrible'
+# }
 
 
 ratings = {
@@ -188,6 +199,5 @@ def application(env, start_response):
 
 
 if __name__ == '__main__':
-
     httpd = make_server('', 8000, application)
     httpd.serve_forever()
