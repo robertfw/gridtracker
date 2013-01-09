@@ -10,8 +10,50 @@ data = {
     '2013-01-04': 'good',
     '2013-01-05': 'bad',
     '2013-01-06': 'bad',
-    '2013-01-07': 'good'
+    '2013-01-07': 'good',
+    '2013-01-08': 'good'
 }
+
+# data = {
+#     '2013-01-01': 'good',
+#     '2013-01-02': 'good',
+#     '2013-01-03': 'great',
+#     '2013-01-04': 'good',
+#     '2013-01-05': 'bad',
+#     '2013-01-06': 'bad',
+#     '2013-01-07': 'terrible'
+# }
+
+
+ratings = {
+    'great': 2,
+    'good': 1,
+    'bad': 0,
+    'terrible': -1
+}
+
+
+def rate_week(days, today):
+    thresholds = {
+        'great': 2 * ratings['great'] + 5 * ratings['good'],
+        'good': 7 * ratings['good'],
+        'bad': 5 * ratings['good'],
+        'terrible': None
+    }
+
+    grace_points = sum(day.year != today.year for day in days)
+
+    score = get_score_for_week(days) + grace_points
+    for rating, level in thresholds.iteritems():
+        if score > level:
+            week_status = rating
+            break
+
+    return week_status
+
+
+def get_score_for_week(days):
+    return sum(ratings.get(get_status_for_date(day), 0) for day in days)
 
 
 def get_classes_for_date(date, today):
@@ -22,6 +64,8 @@ def get_classes_for_date(date, today):
 
     if date == today:
         statii.append('today')
+    elif date > today:
+        statii.append('future')
 
     status = get_status_for_date(date)
     if status:
@@ -69,16 +113,20 @@ def application(env, start_response):
             background: #CCC;
         }
 
+        .future {
+            background: #EEE;
+        }
+
         .great {
             background: #FFD700;
         }
 
         .good {
-            background: #00DD00;
+            background: #33DD77;
         }
 
         .bad {
-            background: #AA0000;
+            background: #BB4433;
         }
 
         .terrible {
@@ -98,8 +146,9 @@ def application(env, start_response):
         }
 
         .week-summary.pending {
-            border: 1px dotted lightblue;
+            border: 1px dotted blue;
         }
+
     </style>
     </head>
     <body>
@@ -122,7 +171,14 @@ def application(env, start_response):
         for day in week:
             content += '<li class="square {classes}"></li>'.format(week=week, day=day, classes=get_classes_for_date(day, today))
 
-        week_status = 'pending'
+        if all(day > today for day in week):
+            week_status = 'blank'
+        elif any(day > today for day in week):
+            week_status = 'pending'
+
+        else:
+            week_status = rate_week(week, today)
+
         content += '<li class="square week-summary {week_status}"></li>'.format(week_status=week_status)
 
         content += '</ul></li>'
@@ -143,6 +199,5 @@ def application(env, start_response):
 
 
 if __name__ == '__main__':
-
     httpd = make_server('', 8000, application)
     httpd.serve_forever()
