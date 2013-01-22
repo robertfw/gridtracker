@@ -25,8 +25,8 @@ data = {
     '2013-01-16': 'good',   # wed
     '2013-01-17': 'good',   # thu
     '2013-01-18': 'good',   # fri
-    '2013-01-19': 'great',    # sat
-    '2013-01-20': 'great',    # sun
+    '2013-01-19': 'great',  # sat
+    '2013-01-20': 'great',  # sun
 }
 
 ratings = {
@@ -62,10 +62,18 @@ def delete_rating_for_day(day):
 
 
 def rate_week(days, today):
-    normal_points = sum(map(lambda day: ratings.get(get_rating_for_day(day), 0), days))
-    grace_points = sum(day.year != today.year for day in days)
+    return next(rating
+                for rating, level in thresholds.iteritems()
+                if sum((get_points_for_week(days), get_grace_points(days, today))) >= level
+    )
 
-    return next(rating for rating, level in thresholds.iteritems() if normal_points + grace_points > level)
+
+def get_points_for_week(days):
+    return sum(map(lambda day: ratings.get(get_rating_for_day(day), 0), days))
+
+
+def get_grace_points(days, as_of_date):
+    return sum(day.year != as_of_date.year for day in days)
 
 
 def get_classes_for_date(day, today):
