@@ -1,0 +1,85 @@
+<html>
+    <head>
+        <title>gridtracker</title>
+        <style type="text/css">
+            ul.calender-grid {
+                padding: 0px;
+                margin: 0px;
+            }
+
+            ul.calendar-grid .week {
+                display: inline;
+                list-style-type: none;
+                float: left;
+            }
+
+            ul.calendar-grid .week ul {
+                padding: 0px;
+            }
+
+            .square  {
+                border: 1px solid white;
+                display: list-item;
+                width: 10px;
+                height: 10px;
+                list-style-type: none;
+            }
+
+            .nodata {
+                background: #CCC;
+            }
+
+            .future {
+                background: #EEE;
+            }
+
+            .great {
+                background: #FFD700;
+            }
+
+            .good {
+                background: #33DD77;
+            }
+
+            .bad {
+                background: #BB4433;
+            }
+
+            .terrible {
+                background: #000;
+            }
+
+            .not-this-year, .blank {
+                background: none;
+            }
+
+            .today {
+                border: 1px dotted blue;
+            }
+
+            .week-summary {
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+
+            .week-summary.pending {
+                border: 1px dotted blue;
+            }
+
+        </style>
+    </head>
+    <body>
+        <ul class="calendar-grid">
+            {{#weeks}}
+            <li class="week">
+                <ul>
+                    {{#days}}
+                        <li class="square {{classes}}"></li>
+                    {{/days}}
+                    <li class="square week-summary {{status}}"></li>
+                </ul>
+            </li>
+            {{/weeks}}
+        </ul>
+    </body>
+</html>
