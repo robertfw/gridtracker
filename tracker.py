@@ -7,14 +7,20 @@ def chunk_list(lst, size):
     return [lst[i:i + size] for i in range(0, len(lst), size)]
 
 data = {
-    '2013-01-01': 'good',
-    '2013-01-02': 'good',
-    '2013-01-03': 'good',
-    '2013-01-04': 'good',
-    '2013-01-05': 'bad',
-    '2013-01-06': 'bad',
-    '2013-01-07': 'good',
-    '2013-01-08': 'good'
+    '2013-01-01': 'good',  # tue
+    '2013-01-02': 'good',  # wed
+    '2013-01-03': 'good',  # thu
+    '2013-01-04': 'good',  # fri
+    '2013-01-05': 'bad',   # sat
+    '2013-01-06': 'bad',   # sun
+    '2013-01-07': 'good',  # mon
+    '2013-01-08': 'good',  # tue
+    '2013-01-08': 'good',  # wed
+    '2013-01-08': 'good',  # thu
+    '2013-01-08': 'good',  # fri
+    '2013-01-08': 'bad',   # sat
+    '2013-01-08': 'great', # sun
+    '2013-01-08': 'good',  # mon
 }
 
 ratings = {
