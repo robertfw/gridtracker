@@ -64,8 +64,7 @@ def delete_rating_for_day(day):
 def rate_week(days, today):
     return next(rating
                 for rating, level in thresholds.iteritems()
-                if sum((get_points_for_week(days), get_grace_points(days, today))) >= level
-    )
+                if sum((get_points_for_week(days), get_grace_points(days, today))) >= level)
 
 
 def get_points_for_week(days):
@@ -114,18 +113,11 @@ def week_days_for_year(year, start_day):
 
 
 def get_weeks(today=datetime.date.today(), start_day=6):
-    weeks = chunk_list(week_days_for_year(today.year, start_day), 7)
-
-    weeks_data = []
-    for week in weeks:
-        week_data = {
-            'days': [{'classes': get_classes_for_date(day, today)} for day in week],
-            'status': get_week_status(week, today)
-        }
-
-        weeks_data.append(week_data)
-
-    return weeks_data
+    return [{
+                'days': [{'classes': get_classes_for_date(day, today)} for day in week],
+                'status': get_week_status(week, today)
+            }
+            for week in chunk_list(week_days_for_year(today.year, start_day), 7)]
 
 
 def application(env, start_response):
